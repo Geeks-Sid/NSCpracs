@@ -1,97 +1,91 @@
 #include<stdio.h>
-#include<stdlib.h>
+void displayq();
+int q[10],rear=-1,front=-1,i,MAX = 10;
 
-int i,choice,element;
-
-struct node {
-	int data;
-	struct node *next;
-}*front=NULL,*rear=NULL,*temp;
 
 int isEmpty() {
-	if(front==NULL&&rear==NULL)
+	if(front > rear || front < 0)
+		return 1;
+	else 
+		return 0;
+}
+
+
+int isFull() {
+	if(rear == MAX-1) 
 		return 1;
 	else
 		return 0;
 }
 
-void enqueue(int j) {
-	if(isEmpty()==1) {
-		struct node *temp = (struct node*)malloc(sizeof(struct node));
-		temp->data=j;
-		temp->next=NULL;
-		front=temp;
-		rear=temp;
-		printf("Insertion is Successfull.");
+
+void enqueue(int item) {
+	if (isFull()==1){
+    		printf("Queue Overflow \n");
 	}
 	else {
-		struct node *temp = (struct node*)malloc(sizeof(struct node));
-		temp->data=j;
-		temp->next=NULL;
-		rear->next = temp;
-		rear = temp;
-		printf("Insertion is Successfull.\n");
+			if(front==-1)
+				front = 0;
+			rear++;
+			q[rear] = item;
 	}
+	displayq();
 }
+
 
 void dequeue() {
 	if(isEmpty()==1) {
-		printf("Sorry, There are no elements to return.");
+		printf("Sorry, we dont have any more elements to delete.");	
 	}
 	else {
-		front = front->next;
-		printf("Deletion is Successfull.");
+		printf("Element has been deleted:");
+		for(i=0;i<rear;i++) {
+			q[i] = q[i+1];
+		}
+		rear--;
+		displayq();
 	}
 }
 
-void display() {
-	if(isEmpty()==1) {
-		printf("Sorry, There are no elements to Print.");
-	}
-	else {
-		printf("The list is as follows:");
-		struct node *temp = (struct node*)malloc(sizeof(struct node));
-		temp=front;
-		while(temp!=NULL) {
-			printf("%d -> ",temp->data);
-			temp=temp->next;
-		}
+
+void displayq() {
+	printf("The Queue is as following :");
+	for(i=front;i<=rear;i++) {
+		printf("%d<-",q[i]);
 	}
 }
 
 
 void main() {
+	int choice,element;
 	do {
-		printf("================================");
-		printf("              MENU              ");
-		printf("================================\n\n");
-		printf("1.Enter an element in Queue\n\n");
-		printf("2.Delete an element from Queue\n\n");
-		printf("3.Display the Queue\n\n");
-		printf("4.Exit\n\n");
-		printf("Enter Your choice:");;
+		printf("\n\n=========================");
+		printf("\n\n           MENU          ");
+		printf("\n\n=========================");
+		printf("\n\n1)Enqueue - Adding elements in the Queue:");
+		printf("\n\n2)Dequeue - Deleting elements from the Queue:");
+		printf("\n\n3)Display - Displaying the current state of the Queue :");
+		printf("\n\n4)Exit - To Exit from the program :");
+		printf("\n\nEnter your choice :");
 		scanf("%d",&choice);
 		switch(choice) {
-			case(1) : {
-				printf("\nEnter the element you want to add:");
+			case(1): {
+				printf("\nEnter the element to add into the Queue :");
 				scanf("%d",&element);
 				enqueue(element);
 				break;
 			}
-			case(2) : {
-				printf("\nThe Element in front will be deleted.");
+			case(2): {
+				printf("\nAn element is going to be deleted :");
 				dequeue();
 				break;
 			}
-			case(3) : {
-				display();
+			case(3): {
+				displayq();
 				break;
 			}
-			case(4) : {
-				printf("\nWe will miss you!");
-			}
-			default : {
-				printf("\nWrong choice! Please Try again.");
+			case(4): {
+				printf("\nYou are exiting from the program. We will miss you.");
 				break;
 			}
 		}
