@@ -15,8 +15,10 @@ double solver(double a) {
 
 int errorcheck(double current,double previous) {
 	double checker;
-	checker = (previous - current)/current;
+	checker = (current-previous)/current;
 	checker = fabs(checker);
+	printf("\nEpsilon current = %lf ",checker);
+	printf("\nCurrent = %lf \n Previous = %lf",current,previous);
 	if(checker<epsilon) 
 		return 1;
 	else
@@ -32,11 +34,10 @@ void GuessChecker(double xl,double xh) {
 	printf("\n\nValue of Xl: %lf",fxl);
 	if(fxh*fxl < 0) {
 		do {
-			prev = fxr;
-			//xr = (xl+xh)/2
+			prev = xr;
 			fxl = solver(xl);
 			fxh = solver(xh);
-			xr = ((fxl*xh)-(fxh*xl))/(fxl-fxu);
+			xr = ((fxl*xh)-(fxh*xl))/(fxl-fxh);
 			fxr = solver(xr);
 			if(fxr*fxl==0) {
 				printf("Xr was found and the answer is %lf",xr);		
@@ -48,7 +49,7 @@ void GuessChecker(double xl,double xh) {
 			else {
 				xl = xr;	
 			}
-			current = fxr;
+			current = xr;
 		}while(errorcheck(current,prev)==0);
 		printf("Xr was found not precisely at %lf",xr);
 	}
