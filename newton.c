@@ -5,23 +5,29 @@ int power,x[10];
 double epsilon;
 
 double solver(double a) {
+	printf("\nControl at solver");
 	double y=0;
 	int i;
 	for(i=power;i>=0;i--) {
 		y+= x[i]*(pow(a,i));	
 	}
+	printf("F(%lf) = %lf",a,y);
 	return y;	
 }
 
 double diffsolver(double b) {
+	printf("\nControl at diffsolver");	
 	double y = 0;
 	int i;
-	for (i=power;i>=0;i++) {
+	for (i=power;i>0;i--) {
 		y+= i*x[i]*(pow(b,i-1));
 	}
+	printf("F'(%lf) = %lf",b,y);
+	return y;
 }
 
 int errorcheck(double current,double previous) {
+	printf("\nControl at errorcheck");	
 	double checker;
 	checker = (current-previous)/current;
 	checker = fabs(checker);
@@ -35,18 +41,20 @@ int errorcheck(double current,double previous) {
 
 void newton(double guess) {
 	double guessnew,guessold,fx=0,fdx=0;
+	printf("\nControl at newton");
+	guessnew = guess;
 	do {
-		guessold = guess;
-		fx = solver(guess);
-		fdx = diffsolver(guess);
-		guessnew = guess - (fx/fdx);
+		guessold = guessnew;
+		fx = solver(guessold);
+		fdx = diffsolver(guessold);
+		guessnew = guessold - (fx/fdx);
 	}while(errorcheck(guessnew,guessold)==0);
 	printf("The solution is : %lf",guessnew);
 }
 
 void main() {
 	int i;
-	double guess1,guess2;
+	double guess1;
 
 	printf("\n\nEnter the maximum power:");
 	scanf("%d",&power);
